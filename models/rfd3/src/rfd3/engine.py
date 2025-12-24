@@ -265,8 +265,8 @@ class RFD3InferenceEngine(BaseInferenceEngine):
             if self.out_dir:
                 for output in output_list:
                     output.dump(out_dir=self.out_dir)
-            else:
-                outputs[example_id] = output_list
+            # else:
+            outputs[example_id] = output_list
         return outputs
 
     def _model_forward(self, pipeline_output) -> List[RFD3Output]:
