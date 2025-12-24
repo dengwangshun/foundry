@@ -505,7 +505,8 @@ class RF3InferenceEngine(BaseInferenceEngine):
         )
 
         # Prepare results dict (if returning in-memory)
-        results = {} if out_dir is None else None
+        # results = {} if out_dir is None else None
+        results = {}
 
         # Main inference loop
         for batch_idx, input_spec in enumerate(loader):
@@ -579,13 +580,13 @@ class RF3InferenceEngine(BaseInferenceEngine):
                         example_out_dir / f"{input_spec.example_id}_metrics.csv",
                         index=False,
                     )
-                else:
-                    # Store in results dict
-                    results[input_spec.example_id] = {
-                        "early_stopped": True,
-                        "mean_plddt": network_output["mean_plddt"],
-                        "metrics": metrics_output,
-                    }
+                # else:
+                # Store in results dict
+                results[input_spec.example_id] = {
+                    "early_stopped": True,
+                    "mean_plddt": network_output["mean_plddt"],
+                    "metrics": metrics_output,
+                }
 
                 continue
 
@@ -716,9 +717,9 @@ class RF3InferenceEngine(BaseInferenceEngine):
                 ranked_logger.info(
                     f"Outputs for {input_spec.example_id} written to {example_out_dir}!"
                 )
-            else:
-                # Store in memory - return list of RF3Output objects
-                results[input_spec.example_id] = rf3_outputs
+            # else:
+            # Store in memory - return list of RF3Output objects
+            results[input_spec.example_id] = rf3_outputs
 
         # merge results across ranks
         self.trainer.fabric.barrier()
